@@ -1,2 +1,2 @@
-# python-flask-restapi
-Example Project on how to develop RESTful API with Flask and Python
+# pharm project 
+RESTful API with Flask and Python for pharm project
