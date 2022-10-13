@@ -2,6 +2,7 @@ from flask import Flask, Response, request
 from db_manager import mysql
 from users_resource import users_resource
 from pharms_resource import pharms_resource
+from boxes_resource import boxes_resource
 from flask_cors import CORS
 
 import json
@@ -22,6 +23,7 @@ mysql.init_app(app)
 
 app.register_blueprint(users_resource)
 app.register_blueprint(pharms_resource)
+app.register_blueprint(boxes_resource)
 
 @app.route('/')
 def home():

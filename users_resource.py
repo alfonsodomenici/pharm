@@ -1,12 +1,14 @@
 
 from flask import Blueprint,request,json,jsonify
 from user_service import UserService
+from pharm_service import PharmService
 from flask import jsonify,Response
 from flask_cors import CORS, cross_origin
 
 users_resource = Blueprint('users_resource',__name__)
 cors = CORS(users_resource)
 userService = UserService()
+pharmService = PharmService()
 
 @users_resource.route('/api/users/',methods=['GET'])
 def all(): 
@@ -53,7 +55,7 @@ def createPharm(id):
     accesspoint = request.json['accesspoint']
     password = request.json['password']
     gmt = request.json['gmt']
-    created = userService.createPharm(id,name,ip,macaddress,wiocode,accesspoint,password,gmt)
+    created = pharmService.create(id,name,ip,macaddress,wiocode,accesspoint,password,gmt)
     print(created)
     return Response(response=json.dumps(created),
         status=201,
@@ -61,4 +63,4 @@ def createPharm(id):
 
 @users_resource.route('/api/users/<int:id>/pharms',methods=['GET'])
 def pharms(id):
-    return jsonify(userService.pharms(id))
+    return jsonify(pharmService.pharmsByUser(id))
