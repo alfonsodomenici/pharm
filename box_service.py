@@ -9,7 +9,7 @@ class BoxService:
         """
         Restituisce un box tramite id
         """
-        q = "SELECT * FROM tbox WHERE id = " + str(id)
+        q = "SELECT *, date_format(now(),'%H:%i:%s') as ora,if( TIMEDIFF(date_format(now(), '%H:%i:%s '), timebox) >time(concat( '00: ',deltatime, ':00 ')) ,1,0) as oltre,if( TIMEDIFF(date_format(now(), '%H:%i:%s '), timebox) <-time(concat( '00: ',deltatime, ':00 ')) ,1,0) as prima FROM tbox WHERE id = " + str(id)
         conn = self.mysql.connect()
         cursor =conn.cursor()
         cursor.execute(q)
@@ -53,7 +53,7 @@ class BoxService:
         """
         Restituisce i boxes della pharm
         """
-        q = "select * from tbox where idpharm = " + str(idpharm)
+        q = "select *, date_format(now(),'%H:%i:%s') as ora,if( TIMEDIFF(date_format(now(), '%H:%i:%s '), timebox) >time(concat( '00: ',deltatime, ':00 ')) ,1,0) as oltre,if( TIMEDIFF(date_format(now(), '%H:%i:%s '), timebox) <-time(concat( '00: ',deltatime, ':00 ')) ,1,0) as prima from tbox where idpharm = " + str(idpharm)
         conn = self.mysql.connect()
         cursor =conn.cursor()
         cursor.execute(q)
@@ -64,7 +64,7 @@ class BoxService:
         """
         Restituisce i boxes della pharm tramite macaddress
         """
-        q = "select b.* from tbox b inner join tpharm p on b.idpharm = p.id  where p.macaddress = '%s'" % (macaddress)
+        q = "select b.*, date_format(now(),'%H:%i:%s') as ora,if( TIMEDIFF(date_format(now(), '%H:%i:%s '), timebox) >time(concat( '00: ',deltatime, ':00 ')) ,1,0) as oltre,if( TIMEDIFF(date_format(now(), '%H:%i:%s '), timebox) <-time(concat( '00: ',deltatime, ':00 ')) ,1,0) as prima from tbox b inner join tpharm p on b.idpharm = p.id  where p.macaddress = '%s'" % (macaddress)
         print(q)
         conn = self.mysql.connect()
         cursor =conn.cursor()
