@@ -4,6 +4,7 @@ from box_service import BoxService
 from boxlog_service import BoxlogService
 from flask import jsonify,Response
 from flask_cors import CORS, cross_origin
+from util import json_serial
 
 boxes_resource = Blueprint('boxes_resource',__name__)
 cors = CORS(boxes_resource)
@@ -18,6 +19,22 @@ def find(id):
     else:
         result = json.dumps(found, indent=4, sort_keys=True, default=str)
         return result
+
+@boxes_resource.route('/api/boxes/<int:id>/',methods=['PATCH'])
+def update(id):
+    found = boxService.find(id)
+    if found is None:
+        return Response(status=404)
+    number = request.json['number']
+    color = request.json['color']
+    message = request.json['message']
+    timebox = request.json['timebox']
+    deltatime = request.json['deltatime']
+    #status = request.json['status']
+    updated = boxService.update(id,number,color,message,timebox,deltatime)
+    return Response(response=json.dumps(updated, default=json_serial),
+        status=201,
+        mimetype='application/json')
 
 @boxes_resource.route('/api/arduino/boxes/<int:id>/',methods=['GET'])
 def findForArduino(id):

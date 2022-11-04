@@ -1,9 +1,10 @@
 import json
 from db_manager import mysql
+from flask import request
 class BoxService:
     
     def __init__(self):
-        self.mysql = mysql;
+        self.mysql = mysql
 
     def find(self,id):
         """
@@ -16,18 +17,29 @@ class BoxService:
         data = cursor.fetchone()
         return data
 
-    def create(self,idpharm,number,color,message,timebox,delta):
+    def create(self,idpharm,number,color,message,timebox,deltatime):
         """
         Crea un box per la pharm
         """
-        q = "insert into tbox (idpharm,number,color,message,timebox,deltatime) VALUES ('%s','%s','%s','%s','%s','%s')" % (idpharm,number,color,message,timebox,delta)
+        q = "insert into tbox (idpharm,number,color,message,timebox,deltatime) VALUES ('%s','%s','%s','%s','%s','%s')" % (idpharm,number,color,message,timebox,deltatime)
         print(q)
         conn = self.mysql.connect()
         cursor =conn.cursor()
         cursor.execute(q)
         conn.commit()
         lastid = cursor.lastrowid;
-        return self.find(lastid)   
+        return self.find(lastid)
+
+    def update(self, id,number,color,message,timebox,deltatime):
+        """
+        Aggiorna un box
+        """
+        q = "UPDATE tbox SET number='%s', color='%s', message='%s', timebox='%s', deltatime='%s' WHERE id = %s" % (number,color,message,timebox,deltatime,id)
+        conn = self.mysql.connect()
+        cursor =conn.cursor()
+        cursor.execute(q)
+        conn.commit()   
+        return self.find(id)
 
     def delete(self,id):
         """
