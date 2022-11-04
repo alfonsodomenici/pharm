@@ -8,7 +8,10 @@ from flask_cors import CORS
 
 import json
 
-app = Flask(__name__)
+app = Flask(__name__,
+            static_url_path='/', 
+            static_folder='web/static',
+            template_folder='web/templates')
 app.config['CORS_HEADERS'] = 'Content-Type'
 cors = CORS(app)
 #cors = CORS(None, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
@@ -28,7 +31,9 @@ app.register_blueprint(users_resource)
 app.register_blueprint(pharms_resource)
 app.register_blueprint(boxes_resource)
 
+'''
 @app.route('/')
 def home():
     response = Response("Pharm backend Works!!!")
     return response
+'''
