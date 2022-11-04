@@ -64,7 +64,7 @@ class BoxService:
         """
         Restituisce i boxes della pharm tramite macaddress
         """
-        q = "select b.*, date_format(now(),'%H:%i:%s') as ora,if( TIMEDIFF(date_format(now(), '%H:%i:%s '), timebox) >time(concat( '00: ',deltatime, ':00 ')) ,1,0) as oltre,if( TIMEDIFF(date_format(now(), '%H:%i:%s '), timebox) <-time(concat( '00: ',deltatime, ':00 ')) ,1,0) as prima from tbox b inner join tpharm p on b.idpharm = p.id  where p.macaddress = '%s'" % (macaddress)
+        q = "select b.*, date_format(now(),'%H:%i:%s') as ora,if( TIMEDIFF(date_format(now(), '%H:%i:%s'), timebox) >time(concat( '00: ',deltatime, ':00 ')) ,1,0) as oltre,if( TIMEDIFF(date_format(now(), '%H:%i:%s'), timebox) <-time(concat( '00: ',deltatime, ':00 ')) ,1,0) as prima from tbox b inner join tpharm p on b.idpharm = p.id  where p.macaddress = '" + macaddress + "'"
         print(q)
         conn = self.mysql.connect()
         cursor =conn.cursor()

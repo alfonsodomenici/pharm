@@ -1,5 +1,6 @@
 from flask import Flask, Response, request
 from db_manager import mysql
+from auths_resource import auths_resource
 from users_resource import users_resource
 from pharms_resource import pharms_resource
 from boxes_resource import boxes_resource
@@ -18,9 +19,11 @@ app.config['MYSQL_DATABASE_USER'] = 'pharm'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'pharm'
 app.config['MYSQL_DATABASE_DB'] = 'db_pharm'
 app.config['MYSQL_DATABASE_HOST'] = '192.168.12.209'
+app.config['SECRET_KEY'] = 'ITS_2022'
 
 mysql.init_app(app)
 
+app.register_blueprint(auths_resource)
 app.register_blueprint(users_resource)
 app.register_blueprint(pharms_resource)
 app.register_blueprint(boxes_resource)
