@@ -50,3 +50,15 @@ class PharmService:
         lastid = cursor.lastrowid;
         return self.find(lastid)
 
+    def update(self,id,name,ip,macaddress,wiocode,accesspoint,password,gmt):
+        """
+        Crea una pharm per lo user
+        """
+        q = "UPDATE tpharm SET name='%s',ip='%s',macaddress='%s',wiocode='%s',accesspoint='%s',password='%s',gmt='%s' WHERE id='%s'" % (name,ip,macaddress,wiocode,accesspoint,password,gmt,id)
+        print(q)
+        conn = self.mysql.connect()
+        cursor =conn.cursor()
+        cursor.execute(q)
+        conn.commit()
+        lastid = cursor.lastrowid;
+        return self.find(lastid)

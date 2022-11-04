@@ -45,6 +45,25 @@ def createBox(id):
         status=201,
         mimetype='application/json')
 
+@pharms_resource.route('/api/pharms/<int:id>', methods=['PATCH'])
+def updateBox(id):
+    found=pharmService.find(id)
+    if found is None:
+        return Response(status=404)
+    name = request.json['name']
+    ip = request.json['ip']
+    macaddress = request.json['macaddress']
+    wiocode = request.json['wiocode']
+    accesspoint = request.json['accesspoint']
+    password = request.json['password']
+    gmt = request.json['gmt']
+    updated = pharmService.update(id,name,ip,macaddress,wiocode,accesspoint,password,gmt)
+    print(updated)
+    return Response(response=json.dumps(updated),
+        status=201,
+        mimetype='application/json')
+
+
 @pharms_resource.route('/api/pharms/<int:id>/boxes',methods=['GET'])
 def boxes(id):
     data = boxService.boxesByPharm(id)
