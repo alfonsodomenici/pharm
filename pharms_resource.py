@@ -41,7 +41,7 @@ def createBox(id):
     #status = request.json['status']
     created = boxService.create(id,number,color,message,timebox,delta)
     print(created)
-    return Response(response=json.dumps(created),
+    return Response(response=json.dumps(created, default=json_serial),
         status=201,
         mimetype='application/json')
 
@@ -57,4 +57,3 @@ def boxesForArduino(macaddress):
     data = boxService.boxesByPharmForArduino(macaddress)
     result =  json.dumps(data, indent=4, sort_keys=True, default=str)
     return result  
-
