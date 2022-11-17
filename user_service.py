@@ -55,3 +55,13 @@ class UserService:
         cursor.execute(q)
         conn.commit()
         
+    def findByUsrPwd(self,usr,pwd):
+        """
+        Restutuisce uno user tramite usr e pwd
+        """
+        q = "SELECT * FROM tuser WHERE usr = '%s' and pwd = '%s' " % (usr,pwd)
+        conn = self.mysql.connect()
+        cursor =conn.cursor()
+        cursor.execute(q)
+        data = cursor.fetchone()
+        return data

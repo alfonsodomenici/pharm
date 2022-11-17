@@ -4,6 +4,7 @@ from user_service import UserService
 from pharm_service import PharmService
 from flask import jsonify,Response
 from flask_cors import CORS, cross_origin
+from auth_decorator import token_required
 
 users_resource = Blueprint('users_resource',__name__)
 cors = CORS(users_resource)
@@ -11,7 +12,8 @@ userService = UserService()
 pharmService = PharmService()
 
 @users_resource.route('/api/users/',methods=['GET'])
-def all(): 
+@token_required
+def all(logged_user): 
     return jsonify(userService.all())
 
 @users_resource.route('/api/users/<int:id>/',methods=['GET'])
