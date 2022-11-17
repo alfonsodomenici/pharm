@@ -5,6 +5,7 @@ from boxlog_service import BoxlogService
 from flask import jsonify,Response
 from flask_cors import CORS, cross_origin
 from util import json_serial
+from auth_decorator import token_required
 
 boxes_resource = Blueprint('boxes_resource',__name__)
 cors = CORS(boxes_resource)
@@ -12,6 +13,7 @@ boxService = BoxService()
 boxlogService = BoxlogService()
 
 @boxes_resource.route('/api/boxes/<int:id>/',methods=['GET'])
+@token_required
 def find(id):
     found = boxService.find(id)
     if found is None:
@@ -21,6 +23,7 @@ def find(id):
         return result
 
 @boxes_resource.route('/api/boxes/<int:id>/',methods=['PATCH'])
+@token_required
 def update(id):
     found = boxService.find(id)
     if found is None:
@@ -37,6 +40,7 @@ def update(id):
         mimetype='application/json')
 
 @boxes_resource.route('/api/arduino/boxes/<int:id>/',methods=['GET'])
+@token_required
 def findForArduino(id):
     found = boxService.find(id)
     if found is None:
@@ -46,6 +50,7 @@ def findForArduino(id):
         return result
 
 @boxes_resource.route('/api/boxes/<int:id>/',methods=['DELETE'])
+@token_required
 def delete(id):
     found = boxService.find(id)
     if found is None:
@@ -54,6 +59,7 @@ def delete(id):
     return Response(status=204)
 
 @boxes_resource.route('/api/boxes/<int:id>/logs',methods=['POST'])
+@token_required
 def createLog(id):
     found = boxService.find(id)
     if found is None:
@@ -67,6 +73,7 @@ def createLog(id):
         mimetype='application/json')
 
 @boxes_resource.route('/api/boxes/<int:id>/logs',methods=['GET'])
+@token_required
 def logs(id):
     data = boxlogService.logByBox(id)
     result =  json.dumps(data, indent=4, sort_keys=True, default=str)

@@ -5,6 +5,7 @@ from box_service import BoxService
 from flask import jsonify,Response
 from flask_cors import CORS, cross_origin
 from util import json_serial
+from auth_decorator import token_required
 
 pharms_resource = Blueprint('pharms_resource',__name__)
 cors = CORS(pharms_resource)
@@ -12,6 +13,7 @@ pharmService = PharmService()
 boxService = BoxService()
 
 @pharms_resource.route('/api/pharms/<int:id>/',methods=['GET'])
+@token_required
 def find(id):
     found = pharmService.find(id)
     if found is None:
@@ -21,6 +23,7 @@ def find(id):
 
 
 @pharms_resource.route('/api/pharms/<int:id>/',methods=['DELETE'])
+@token_required
 def delete(id):
     found = pharmService.find(id)
     if found is None:
@@ -29,6 +32,7 @@ def delete(id):
     return Response(status=204)
 
 @pharms_resource.route('/api/pharms/<int:id>/boxes',methods=['POST'])
+@token_required
 def createBox(id):
     found = pharmService.find(id)
     if found is None:
@@ -46,12 +50,14 @@ def createBox(id):
         mimetype='application/json')
 
 @pharms_resource.route('/api/pharms/<int:id>/boxes',methods=['GET'])
+@token_required
 def boxes(id):
     data = boxService.boxesByPharm(id)
     result =  json.dumps(data, indent=4, sort_keys=True, default=str)
     return result
 
 @pharms_resource.route('/api/arduino/pharms/<string:macaddress>/boxes',methods=['GET'])
+@token_required
 def boxesForArduino(macaddress):
     print(macaddress)
     data = boxService.boxesByPharmForArduino(macaddress)

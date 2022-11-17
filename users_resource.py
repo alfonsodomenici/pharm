@@ -38,6 +38,7 @@ def create():
         mimetype='application/json')
 
 @users_resource.route('/api/users/<int:id>/',methods=['DELETE'])
+@token_required
 def delete(id):
     found = userService.find(id)
     if found is None:
@@ -46,6 +47,7 @@ def delete(id):
     return Response(status=204)
 
 @users_resource.route('/api/users/<int:id>/pharms',methods=['POST'])
+@token_required
 def createPharm(id):
     found = userService.find(id)
     if found is None:
@@ -64,5 +66,6 @@ def createPharm(id):
         mimetype='application/json')
 
 @users_resource.route('/api/users/<int:id>/pharms',methods=['GET'])
+@token_required
 def pharms(id):
     return jsonify(pharmService.pharmsByUser(id))
